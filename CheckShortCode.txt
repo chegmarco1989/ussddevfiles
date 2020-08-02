@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Http\Ussd\Actions;
+
+use Sparors\Ussd\Action;
+
+class CheckShortCode extends Action
+{
+    public function run(): string
+    {
+        $shortcode = request('msg');
+        
+        if ($shortcode == '*123#') {
+            return $this->menu->text('Welcome To Laravel USSD')
+						->lineBreak(2)
+						->line('Select an option')
+						->listing([
+							'Airtime Topup',
+							'Data Bundle',
+							'TV Subscription',
+							'ECG/GWCL',
+							'Talk To Us'
+						])
+						->lineBreak(2);
+						->line('9. Next Page')
+						->line('#. Back')
+						->line('Main Menu');
+						->text('Powered by Sparors')
+        }
+        
+        else if ($shortcode == '*888#') {
+            return $this->menu->text('Welcome To Laravel Ussd')
+						->lineBreak(2)
+						->line('Select an option')
+						->paginateListing([
+							'Buy Airtime',
+							'Buy Data',
+							'Pay Bills',
+							'Invest']
+							, 1, 3, '. ')
+						->lineBreak(2)
+						->line('9. Next Page')
+						->line('#. Back')
+						->line('Main Menu');
+        }
+		
+		else {
+			
+			return "Error !!! Invalid USSD Code. Please try again !";
+		
+		}
+    }
+}
